@@ -1,31 +1,32 @@
-name: CI/CD - Python Security Check with Bandit
+name: CI
 
 on:
   push:
     branches:
-      - main         # Запускать workflow на push в ветку main
+      - main
   pull_request:
     branches:
-      - main         # Запускать при создании pull request к ветке main
+      - main
 
 jobs:
   security-check:
     runs-on: ubuntu-latest
-
+    
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.8'  # Укажите версию Python, которая нужна вашему приложению
-
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install bandit
-
-      - name: Run Bandit security check
-        run: |
-          bandit -r .               # Запустить Bandit на всей директории проекта
+    - name: Проверка исходного кода
+      uses: actions/checkout@v2
+      
+    - name: Установка Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.8'
+        
+    - name: Установка зависимостей
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        
+    - name: Проверка безопасности кода с помощью Bandit
+      run: |
+        pip install bandit
+        bandit -r .  # Запуск Bandit на всех файлах в текущей директории
