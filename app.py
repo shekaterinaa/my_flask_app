@@ -3,15 +3,20 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from models import db, User, Expense, AuditLog
 from werkzeug.security import generate_password_hash, check_password_hash
+from dotenv import load_dotenv
+import os
+
+# Загружаем переменные окружения из файла .env
+load_dotenv()
 
 app = Flask(__name__)
 
-app.secret_key = "1111"  
+app.secret_key = os.getenv("SECRET_KEY")  # Берем секретный ключ из переменной окружения
 user_db = "katya"
 host_ip = "localhost"
 host_port = "5432"
 database_name = "expense"
-password = "34567"
+password = os.getenv("DATABASE_PASSWORD")
 
 app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql://{user_db}:{password}@{host_ip}:{host_port}/{database_name}'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
