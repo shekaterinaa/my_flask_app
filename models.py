@@ -3,10 +3,10 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
-class User(db.Model, UserMixin):  # Наследуем от UserMixin
+class User(db.Model, UserMixin): 
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(120), unique=True, nullable=False)
-    password = db.Column(db.String(256), nullable=False)  # Сохраняем пароль в открытом виде для примера; рекомендуется использовать хеширование
+    password = db.Column(db.String(256), nullable=False)  
     name = db.Column(db.String(80), nullable=True)
 
     expenses = db.relationship('Expense', backref='user', lazy=True)

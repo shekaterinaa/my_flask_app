@@ -6,13 +6,11 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from dotenv import load_dotenv
 import os
 
-# Загружаем переменные окружения из файла .env
 load_dotenv()
 
 app = Flask(__name__)
 
-app.secret_key = os.getenv("SECRET_KEY")  # Берем секретный ключ из переменной окружения
-user_db = "katya"
+app.secret_key = os.getenv("SECRET_KEY")  
 host_ip = "localhost"
 host_port = "5432"
 database_name = "expense"
@@ -60,7 +58,7 @@ def goforaccount():
         email = request.form['email']
         password = request.form['password']
         user = User.query.filter_by(email=email).first()
-        if not user or not check_password_hash(user.password, password):  # Проверяем хешированный пароль
+        if not user or not check_password_hash(user.password, password):  
             return render_template('goforaccount.html', error="Неправильный email или пароль")
 
         login_user(user)
@@ -89,7 +87,6 @@ def add_expense():
         db.session.add(new_expense)
         db.session.commit()
 
-        # Логирование действий
         log_action(current_user.id, 'добавление', new_expense.id)
         flash("Расход добавлен!", "success")
         return redirect(url_for('list_expenses'))
@@ -108,14 +105,14 @@ def edit_expense(expense_id):
     expense = Expense.query.get_or_404(expense_id)
     if request.method == 'POST':
         data = request.form
-        # Проверка наличия ключей в данных формы
+        
         if 'amount' in data and 'category' in data:
             expense.amount = data['amount']
             expense.category = data['category']
             expense.description = data.get('description', '')  
             db.session.commit()
 
-            # Логирование действий
+            
             log_action(current_user.id, 'изменение', expense.id)
             flash("Запись обновлена!", "success")
             return redirect(url_for('list_expenses'))
@@ -132,12 +129,12 @@ def delete_expense(expense_id):
     db.session.delete(expense)
     db.session.commit()
 
-    # Логирование действий
+    
     log_action(current_user.id, 'удаление', expense.id)
     flash("Запись удалена!", "success")
     return redirect(url_for('list_expenses'))
 
-# Функция логирования действий
+
 def log_action(user_id, action_type, record_id):
     new_log = AuditLog(user_id=user_id, action_type=action_type, record_id=record_id)
     db.session.add(new_log)
@@ -145,7 +142,7 @@ def log_action(user_id, action_type, record_id):
 
 if __name__ == '__main__':
     with app.app_context():
-        db.create_all()  # Создание базовых таблиц при запуске
+        db.create_all()  
     app.run(debug=False) 
 
 
