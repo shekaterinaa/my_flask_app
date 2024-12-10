@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Список расходов</title>
+</head>
+<body>
+    <h1>Список ваших расходов</h1>
+    <ul>
+        {% for expense in expenses %}
+            <li>
+                {{ expense.amount }} - {{ expense.category }} - {{ expense.description }}
+                <form action="/edit/{{ expense.id }}" method="post" style="display:inline;">
+                    <button type="submit">Редактировать</button>
+                </form>
+                <form action="/delete/{{ expense.id }}" method="post" style="display:inline;">
+                    <button type="submit">Удалить</button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+    <a href="/add">Добавить новый расход</a>
+</body>
+</html>
+
+
