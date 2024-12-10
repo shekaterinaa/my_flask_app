@@ -146,7 +146,6 @@ def log_action(user_id, action_type, record_id):
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()  # Создание базовых таблиц при запуске
-    # Установите debug на False или уберите его, если запускаете в продакшне
     app.run(debug=False) 
 
 
