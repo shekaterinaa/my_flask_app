@@ -6,8 +6,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
 
-# Конфигурация приложения
-app.secret_key = "your_secret_key"  # Замените на более сложный ключ
+app.secret_key = "1111"  
 user_db = "katya"
 host_ip = "localhost"
 host_port = "5432"
@@ -35,7 +34,7 @@ def main():
 def registration():
     if request.method == "POST":
         email = request.form['email']
-        password = generate_password_hash(request.form['password'])  # Хешируем пароль
+        password = generate_password_hash(request.form['password']) 
         name = request.form['name']
 
         existing_user = User.query.filter_by(email=email).first()
@@ -108,7 +107,7 @@ def edit_expense(expense_id):
         if 'amount' in data and 'category' in data:
             expense.amount = data['amount']
             expense.category = data['category']
-            expense.description = data.get('description', '')  # Можно использовать get() для предотвращения ошибочного KeyError
+            expense.description = data.get('description', '')  
             db.session.commit()
 
             # Логирование действий
