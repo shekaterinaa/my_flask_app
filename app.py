@@ -15,7 +15,7 @@ host_ip = "localhost"
 host_port = "5432"
 database_name = "expense"
 password = os.getenv("DATABASE_PASSWORD")
-
+user_db = os.getenv("DATABASE_USER") 
 app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql://{user_db}:{password}@{host_ip}:{host_port}/{database_name}'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
@@ -87,6 +87,7 @@ def add_expense():
         db.session.add(new_expense)
         db.session.commit()
 
+        
         log_action(current_user.id, 'добавление', new_expense.id)
         flash("Расход добавлен!", "success")
         return redirect(url_for('list_expenses'))
